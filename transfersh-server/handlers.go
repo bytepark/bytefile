@@ -246,7 +246,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 
 			}
 
-			fmt.Fprintf(w, "https://www.bytefile.de/%s/%s\n", token, filename)
+			fmt.Fprintf(w, "https://bytefile.de/%s/%s\n", token, filename)
 		}
 	}
 }
@@ -362,7 +362,7 @@ func putHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 
-	fmt.Fprintf(w, "https://www.bytefile.de/%s/%s\n", token, filename)
+	fmt.Fprintf(w, "https://bytefile.de/%s/%s\n", token, filename)
 }
 
 func zipHandler(w http.ResponseWriter, r *http.Request) {
