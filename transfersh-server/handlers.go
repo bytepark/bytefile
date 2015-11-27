@@ -246,7 +246,7 @@ func postHandler(w http.ResponseWriter, r *http.Request) {
 
 			}
 
-			fmt.Fprintf(w, "https://%s/%s/%s\n", ipAddrFromRemoteAddr(r.Host), token, filename)
+			fmt.Fprintf(w, "https://www.bytefile.de/%s/%s\n", token, filename)
 		}
 	}
 }
@@ -362,7 +362,7 @@ func putHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 
-	fmt.Fprintf(w, "https://%s/%s/%s\n", ipAddrFromRemoteAddr(r.Host), token, filename)
+	fmt.Fprintf(w, "https://www.bytefile.de/%s/%s\n", token, filename)
 }
 
 func zipHandler(w http.ResponseWriter, r *http.Request) {
@@ -588,10 +588,10 @@ func RedirectHandler(h http.Handler) http.HandlerFunc {
 				http.Redirect(w, r, "https://transfer.sh"+r.RequestURI, 301)
 				return
 			}
-		} else if ipAddrFromRemoteAddr(r.Host) != "transfer.sh" {
-			http.Redirect(w, r, "https://transfer.sh"+r.RequestURI, 301)
-			return
-		}
+		} //else if ipAddrFromRemoteAddr(r.Host) != "transfer.sh" {
+		//	http.Redirect(w, r, "https://transfer.sh"+r.RequestURI, 301)
+		//	return
+		//}
 
 		h.ServeHTTP(w, r)
 	}
