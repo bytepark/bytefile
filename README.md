@@ -1,8 +1,8 @@
-# transfer.sh
+# bytefile
 
 Easy and fast file sharing from the command-line. This code contains the server with everything you need to create your own instance.
 
-Transfer.sh support currently the s3 (Amazon S3) provider and local file system (local).
+bytefile supports currently the s3 (Amazon S3) provider and local file system (local).
 
 [![Build Status](https://travis-ci.org/dutchcoders/transfer.sh.svg?branch=master)](https://travis-ci.org/dutchcoders/transfer.sh)
 
@@ -10,23 +10,23 @@ Transfer.sh support currently the s3 (Amazon S3) provider and local file system 
 
 ```
 Upload:
-$ curl --upload-file ./hello.txt https://transfer.sh/hello.txt
+$ curl --upload-file ./hello.txt https://hostname.tld/hello.txt
 
 Encrypt & upload:
-$ cat /tmp/hello.txt|gpg -ac -o-|curl -X PUT --upload-file "-" https://transfer.sh/test.txt
+$ cat /tmp/hello.txt|gpg -ac -o-|curl -X PUT --upload-file "-" https://hostname.tld/test.txt
 
 Download & decrypt:
-$ curl https://transfer.sh/1lDau/test.txt|gpg -o- > /tmp/hello.txt
+$ curl https://hostname.tld/1lDau/test.txt|gpg -o- > /tmp/hello.txt
 
 Upload to virustotal:
-$ curl -X PUT --upload-file nhgbhhj https://transfer.sh/test.txt/virustotal
+$ curl -X PUT --upload-file nhgbhhj https://hostname.tld/test.txt/virustotal
 
 Add alias to .bashrc or .zshrc:
 ===
 transfer() {
     # write to output to tmpfile because of progress bar
     tmpfile=$( mktemp -t transferXXX )
-    curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) >> $tmpfile;
+    curl --progress-bar --upload-file $1 https://hostname.tld/$(basename $1) >> $tmpfile;
     cat $tmpfile;
     rm -f $tmpfile;
 }
@@ -86,4 +86,5 @@ Contributions are welcome.
 ## Copyright and license
 
 Code and documentation copyright 2011-2014 Remco Verhoef. 
-Code released under [the MIT license](LICENSE). 
+Extension by bytepark.
+Code released under [the MIT license](LICENSE).
