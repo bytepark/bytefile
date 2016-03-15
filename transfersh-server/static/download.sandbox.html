@@ -34,35 +34,22 @@
                 </ul>
             </div>
         </div>
-    
 
-    <section id="home">
-        <div class="wrapper">
-    
-                    <br/>
-                    <h2 class="page-title">{{.Filename}}</h2>
-                    <h4>type: <b>{{.ContentType}}</b></h4>
-                    <h4>size: <b>{{.ContentLength | format "#,###."}}</b> bytes</h4>
+<section id="home">
+    <div class="wrapper">
 
-                    <a href="{{.Url}}" class="btn-cta btn"> download</i> </a> <br/><br/>
+                <br/>
+                <h2 class="page-title">{{.Filename}}</h2>
+                <h4>type: <b>{{.ContentType}}</b></h4>
+                <h4>size: <b>{{.ContentLength | format "#,###."}}</b> bytes</h4>
+
+                <a href="{{.Url}}" class="btn-cta btn"> download</i> </a> <br/><br/>
 
 
-            <div class="row animated fadeInDown">
-                <div id="from-terminal" class=" box col-md-8  col-md-offset-2 col-xs-12">
-                    <div class="terminal-top">
+    <br/>
 
-                    </div>
-                    <div id="terminal" class="terminal preview-image">
-                        <audio controls>
-                            <source src="{{.Url}}" type="{{.ContentType}}">
-                        </audio>
-                    </div>
-                </div>
-            </div>
-            <br/>
-            <div>
+</section>
 
-    </section>
 
     <footer>
         <div class="wrapper">
@@ -72,7 +59,6 @@
 
         <script src="/scripts/main.js"></script>
           
-
 
 </body>
 

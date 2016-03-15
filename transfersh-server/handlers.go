@@ -34,10 +34,7 @@ import (
 	"compress/gzip"
 	"errors"
 	"fmt"
-	"github.com/dutchcoders/go-clamd"
-	"github.com/gorilla/mux"
-	"github.com/kennygrant/sanitize"
-	"github.com/russross/blackfriday"
+	"html"
 	html_template "html/template"
 	"io"
 	"io/ioutil"
@@ -51,6 +48,12 @@ import (
 	"strings"
 	text_template "text/template"
 	"time"
+
+	clamd "github.com/dutchcoders/go-clamd"
+
+	"github.com/gorilla/mux"
+	"github.com/kennygrant/sanitize"
+	"github.com/russross/blackfriday"
 )
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
@@ -100,9 +103,9 @@ func previewHandler(w http.ResponseWriter, r *http.Request) {
 			output := blackfriday.MarkdownCommon(data)
 			content = html_template.HTML(output)
 		} else if strings.HasPrefix(contentType, "text/plain") {
-			content = html_template.HTML(fmt.Sprintf("<pre>%s</pre>", data))
+			content = html_template.HTML(fmt.Sprintf("<pre>%s</pre>", html.EscapeString(string(data))))
 		} else {
-			content = html_template.HTML(data)
+			templatePath = "download.sandbox.html"
 		}
 
 	default:
@@ -348,7 +351,7 @@ func putHandler(w http.ResponseWriter, r *http.Request) {
 
 	token := Encode(10000000 + int64(rand.Intn(1000000000)))
 
-	log.Printf("Uploading %s %d %s", token, filename, contentLength, contentType)
+	log.Printf("Uploading %s %s %d %s", token, filename, contentLength, contentType)
 
 	var err error
 
@@ -391,7 +394,7 @@ func zipHandler(w http.ResponseWriter, r *http.Request) {
 		reader, _, _, err := storage.Get(token, filename)
 
 		if err != nil {
-			if err.Error() == "The specified key does not exist." {
+			if storage.IsNotExist(err) {
 				http.Error(w, "File not found", 404)
 				return
 			} else {
@@ -461,7 +464,7 @@ func tarGzHandler(w http.ResponseWriter, r *http.Request) {
 
 		reader, _, contentLength, err := storage.Get(token, filename)
 		if err != nil {
-			if err.Error() == "The specified key does not exist." {
+			if storage.IsNotExist(err) {
 				http.Error(w, "File not found", 404)
 				return
 			} else {
@@ -513,7 +516,7 @@ func tarHandler(w http.ResponseWriter, r *http.Request) {
 
 		reader, _, contentLength, err := storage.Get(token, filename)
 		if err != nil {
-			if err.Error() == "The specified key does not exist." {
+			if storage.IsNotExist(err) {
 				http.Error(w, "File not found", 404)
 				return
 			} else {
@@ -553,7 +556,7 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 
 	reader, contentType, contentLength, err := storage.Get(token, filename)
 	if err != nil {
-		if err.Error() == "The specified key does not exist." {
+		if storage.IsNotExist(err) {
 			http.Error(w, "File not found", 404)
 			return
 		} else {
